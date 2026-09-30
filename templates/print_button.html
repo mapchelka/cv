@@ -1,0 +1,31 @@
+<!-- templates/print_button.html -->
+<div style="display: flex; justify-content: flex-end; padding-right: 15px;">
+    <!-- ИСПРАВЛЕНО: window.parent.print() гарантирует печать ВСЕГО резюме вместо белого листа -->
+    <button onclick="window.parent.print()" style="
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #ffffff;
+        color: #333333;
+        border: 1px solid #cccccc;
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        transition: all 0.2s;"
+        onmouseover="this.style.backgroundColor='#f5f5f5'; this.style.borderColor='#999999';"
+        onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#cccccc';">
+        <span style="font-size: 1rem; vertical-align: middle;">🖨️</span> Сохранить в PDF / Печать
+    </button>
+</div>
+
+<!-- Скрываем кнопку внутри фрейма в момент отправки на принтер -->
+<style>
+@media print {
+    div, button {
+        display: none !important;
+    }
+}
+</style>

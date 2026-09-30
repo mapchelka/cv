@@ -1,0 +1,53 @@
+{
+    "PAGE_TITLE": "Цифровое резюме | Марина Пчёлка",
+    "PAGE_ICON": ":wave:",
+    "NAME": "Марина Пчёлка",
+    "AVATAR": "profile_pic.jpg",
+    "PROFESSION": "**Senior Data Engineer | Team Lead**",
+    "DESCRIPTION": "* Опыт работы в сфере аналитики данных и построения КХД — более 15 лет.\n* Специализируюсь на оптимизации SQL, проектировании масштабируемых пайплайнов и управлении инфраструктурой DataPlatform.\n* Обладаю продуктовым мышлением и архитектурным подходом.",
+    "SOCIAL_MEDIA": {
+        "linkedin": "https://www.linkedin.com/in/marina-pchelka-0359916a/",
+        "habr": "https://career.habr.com/mapchelka",
+        "github": "https://github.com/mapchelka/",
+        "headhunter": "https://hh.ru/resume/fab54215ff00b04c3b0039ed1f736563726574",
+        "telegram": "https://t.me/pchelka_marina"
+    },
+    "EXPERIENCE": {
+        "t_bank": {
+            "job_position": "Ведущий разработчик",
+            "job_name": "Т-Банк (Тинькофф)",
+            "job_url": "https://tbank.ru/",
+            "job_period": "февр. 2017 — сент. 2025 · 8 лет 8 мес.",
+            "job_skills": ["Python", "SQL", "Team Leadership", "Greenplum", "Apache Airflow", "Apache NiFi" ]
+        },
+        "dis_group": {
+            "job_position": "Ведущий консультант",
+            "job_name": "DIS-Group (Data Integration Software)",
+            "job_url": "https://dis-group.ru/",
+            "job_period": "сент. 2013 — февр. 2017 · 3 г. 6 мес.",
+            "job_skills": ["ETL", "Informatica PowerCenter", "Oracle SQL", "Data Vault" ]
+        },
+        "r_style": {
+            "job_position": "Старший специалист по внедрению ПО",
+            "job_name": "R-Style Softlab",
+            "job_url": "https://www.softlab.ru/",
+            "job_period": "май 2011 — сент. 2013 · 2 г. 5 мес.",
+            "job_skills": ["DWH", "SQL", "Oracle", "PL/SQL"]
+        }
+    },
+    "EDUCATION": {
+        "karpov": {
+            "edu_name": "karpov.courses",
+            "edu_url": "https://karpov.courses/ml-start",
+            "edu_specialization": "Инженер машинного обучения (Machine Learning Engineer)",
+            "edu_period": "март 2026 — сент. 2026"
+        },
+        "mtuci": {
+            "edu_name": "Московский технический университет связи и информатики (МТУСИ)",
+            "edu_url": "https://mtuci.ru/",
+            "edu_specialization": "Радиотехника, Инженер-радиотехник",
+            "edu_period": "сент. 2005 — июль 2010"
+        }
+    },
+    "PROJECTS": {}
+}

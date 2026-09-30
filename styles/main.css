@@ -1,0 +1,283 @@
+@import url('https://googleapis.com');
+
+/* =======================================================
+   1. ГЛОБАЛЬНЫЕ СТИЛИ СТРАНИЦЫ И БАЗА
+   ======================================================= */
+* {
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Настройки для всего тела страницы (светлый фон и темный текст) */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #ffffff !important;
+    color: #191919 !important;
+}
+
+/* УМЕНЬШАЕМ ОТСТУПЫ СВЕРХУ И ПО БОКАМ ДЛЯ ЭКРАНА */
+.main .block-container {
+    padding-top: 2rem !important;    /* Уменьшили верхний отступ (был 6rem) */
+    padding-bottom: 2rem !important; /* Уменьшили нижний отступ */
+    padding-left: 3rem !important;   /* Сделали боковые поля аккуратнее */
+    padding-right: 3rem !important;
+    max-width: 900px !important;     /* Оптимальная ширина, чтобы резюме не растягивалось на весь монитор */
+}
+
+/* Ссылки (стиль LinkedIn) */
+a {
+    text-decoration: none;
+    color: #0a66c2 !important;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #004182 !important;
+    text-decoration: underline !important;
+}
+
+/* Списки и разделители */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* Делаем дефолтную линию тоньше и убираем огромный нижний отступ 4% */
+hr {
+    border: none !important;
+    border-top: 1px solid #e0e0e0 !important;
+    margin-top: 0px !important;
+    margin-bottom: 12px !important; /* Вместо 4% сделали фиксированный аккуратный зазор */
+}
+
+/* Скрытие дефолтных служебных элементов Streamlit в браузере */
+#MainMenu, footer, header, [data-testid="stHeader"] {
+    visibility: hidden;
+    height: 0;
+}
+
+/* =======================================================
+   2. СТИЛИЗАЦИЯ И СЖАТИЕ ЭЛЕМЕНТОВ (ОБЫЧНЫЙ ЭКРАН)
+   ======================================================= */
+/* СХЛОПЫВАЕМ ГИГАНТСКИЕ ПУСТОТЫ STREAMLIT НА ЭКРАНЕ */
+/* Уменьшаем автоматический зазор между вертикальными блоками */
+[data-testid="stVerticalBlock"] {
+    gap: 0.6rem !important; /* В два раза уменьшили пустые пространства на экране */
+}
+
+/* Обнуляем скрытые нижние отступы встроенных контейнеров Streamlit */
+[data-testid="element-container"], div[data-testid="stBlock"] {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    margin-top: 0px !important;
+}
+
+/* Оптимизируем отступы вокруг горизонтальных блоков колонок */
+[data-testid="stHorizontalBlock"] {
+    gap: 0.8rem !important;
+    margin-bottom: 4px !important;
+}
+
+/* ПРИЖИМАЕМ ЛИНИЮ К ЗАГОЛОВКАМ СЕКЦИЙ (Опыт работы / Образование) */
+h2 {
+    font-size: 1.4rem !important;
+    margin-top: 18px !important;    /* Аккуратный отступ сверху перед новой секцией */
+    margin-bottom: 2px !important;  /* Прижали черту вплотную к буквам подзаголовка */
+    padding-bottom: 0px !important;
+}
+
+/* Убираем лишние отступы между строками в блоках опыта и образования */
+.job-block p, .edu-block p {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+    line-height: 1.4 !important;
+}
+
+/* Обнуляем пустой контейнер, в который Streamlit заворачивает линию */
+[data-testid="stHorizontalBlock"] + div {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+/* Настройки блока контактов для экрана */
+.contact-card-row {
+    margin-bottom: 5px !important; /* Компактный вертикальный шаг между контактами */
+}
+
+.contact-card-link {
+    color: #333333 !important;
+    font-size: 0.95rem;
+}
+
+.contact-card-link:hover {
+    color: #0a66c2 !important;
+    text-decoration: none !important;
+}
+
+/* Блок ссылок на соцсети в самом низу (если используется) */
+.social-link-item a {
+    color: #5e5e5e !important;
+    font-weight: 600;
+}
+
+.social-link-item a:hover {
+    color: #0a66c2 !important;
+}
+
+/* Делаем круглой ТОЛЬКО аватарку профиля по её уникальному классу */
+img.profile-avatar {
+    width: 210px !important;
+    height: 210px !important;
+    border-radius: 50% !important;      
+    object-fit: cover !important;        
+    margin-top: 10px !important;         
+    display: block !important;
+}
+
+/* Контейнер для кнопок в правом верхнем углу */
+.top-buttons-container {
+    position: absolute;
+    top: 40px; 
+    right: 40px; 
+    display: flex;
+    gap: 10px; 
+    z-index: 999999;
+}
+
+/* Общие стили для квадратных кнопок */
+.top-right-btn {
+    width: 42px !important;
+    height: 42px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 4px !important; 
+    background-color: #ffffff !important;
+    color: #5e5e5e !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.top-right-btn:hover {
+    border-color: #0a66c2 !important;
+    color: #0a66c2 !important;
+    background-color: #f3f2ef !important;
+}
+
+/* =======================================================
+   3. УЛЬТРА-СЖАТИЕ И ОПТИМИЗАЦИЯ ПОД 1 ЛИСТ А4 (@media print)
+   ======================================================= */
+@media print {
+    /* 1. Скрываем абсолютно весь технический мусор Streamlit и контейнеры кнопок */
+    header, 
+    footer, 
+    [data-testid="stHeader"], 
+    [data-testid="stSidebar"], 
+    .stAppDeployButton,
+    .stComponentsEmbed,
+    .top-buttons-container {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* 2. Максимально зажимаем поля самого листа А4 для расширения текстовой зоны */
+    .stApp, [data-testid="stMainView"], .main .block-container {
+        background-color: #ffffff !important;
+        display: block !important;
+        visibility: visible !important;
+        padding-top: 8mm !important;     /* Сжали верхнее поле */
+        padding-bottom: 8mm !important;  /* Сжали нижнее поле */
+        padding-left: 12mm !important;   /* Сжали боковые поля, чтобы строки вмещали больше слов */
+        padding-right: 12mm !important;
+        margin: 0 !important;
+    }
+
+    /* 3. Схлопываем гигантские автоматические пустоты и отступы Streamlit */
+    [data-testid="stVerticalBlock"] {
+        gap: 0.2rem !important;          /* Минимальный зазор между виджетами */
+    }
+    
+    [data-testid="element-container"], div[data-testid="stBlock"] {
+        margin-bottom: 0px !important;
+        padding-bottom: 0px !important;
+        margin-top: 0px !important;
+    }
+
+    [data-testid="stHorizontalBlock"] {
+        gap: 0.3rem !important;          /* Сближаем колонки логотипа и текста */
+        margin-bottom: 2px !important;
+    }
+
+    /* 4. Компактный шрифт и плотный межстрочный интервал */
+    html, body, p, span, li, a {
+        font-size: 12.5px !important;    
+        line-height: 1.25 !important;    
+    }
+
+    /* Делаем заголовки соразмерными и убираем отступы до линий */
+    h1 { font-size: 22px !important; margin-top: 0px !important; margin-bottom: 3px !important; }
+    h2 { font-size: 16px !important; margin-top: 10px !important; margin-bottom: 1px !important; }
+    h3 { font-size: 15px !important; margin-top: 3px !important; margin-bottom: 3px !important; }
+    
+    /* Линия прижата к заголовку сверху, но дает воздух карточке снизу */
+    hr, [data-testid="stHorizontalBlock"] + div hr { 
+        margin-top: 0px !important; 
+        margin-bottom: 16px !important;   /* Увеличили отступ, чтобы карточка Т-Банка не прилипала */
+    }
+
+    /* Дополнительно убираем пустой схлопнутый маргин у контейнера линии */
+    [data-testid="stHorizontalBlock"] + div {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+
+    /* 5. Выравнивание и компактность аватарки и контактов */
+    img.profile-avatar {
+        width: 130px !important;
+        height: 130px !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 12px !important;
+    }
+
+    [data-testid="stHorizontalBlock"] > div:first-child {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* УЛЬТРА-СЖАТИЕ КОНТАКТОВ НА ПЕЧАТИ */
+    .contact-card-row {
+        margin-bottom: 2px !important;  /* Минимальный плотный зазор на листе А4 */
+    }
+    
+    .contact-card-link {
+        font-size: 12px !important;     /* Сделали шрифт контактов чуть меньше основного текста */
+    }
+
+    .contact-icon {
+        width: 14px !important;         /* Пропорционально уменьшаем контейнер иконки */
+        height: 14px !important;
+    }
+    
+    .contact-icon img {
+        width: 14px !important;         /* Сами иконки соцсетей тоже становятся аккуратнее */
+        height: 14px !important;
+    }
+
+    .job-block, .edu-block {
+        margin-bottom: 2px !important;   
+    }
+
+    /* 6. Гарантия отображения Base64 картинок на печати */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}

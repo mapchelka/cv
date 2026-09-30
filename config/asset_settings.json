@@ -1,0 +1,19 @@
+{
+    "company": {
+        "t_bank": "tinkoff_logo.jpg",
+        "tinkoff": "tinkoff_logo.jpg",
+        "dis_group": "dis_group_logo.png",
+        "r_style": "r_style_logo.jpg"
+    },
+    "education": {
+        "karpov": "cources_karpov_logo.png",
+        "mtuci": "mtuci_logo.png"
+    },
+    "social_media": {
+        "habr": "habr_icon.svg",
+        "headhunter": "headhunter_icon.svg",
+        "linkedin": "linkedin_icon.svg",
+        "github": "github_icon.svg",
+        "telegram": "telegram_icon.svg"
+    }
+}

@@ -1,0 +1,14 @@
+<!-- templates/contact_card.html -->
+<div class="contact-card-row" style="display: flex; align-items: center; gap: 10px;">
+    <div class="contact-icon" style="display: flex; align-items: center; justify-content: center; width: 18px; height: 18px;">
+        {contact_icon}
+    </div>
+    <a href="{contact_url}" target="_blank" class="contact-card-link" style="
+        text-decoration: none; 
+        font-weight: 500; 
+        transition: color 0.2s;" 
+        onmouseover="this.style.color='#0a66c2'" 
+        onmouseout="this.style.color='#333333'">
+        {contact_text}
+    </a>
+</div>
