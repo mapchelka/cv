@@ -1,4 +1,27 @@
+import os
+from core.config_loader import Config
+
+
+class Social:
+    folder = "social_media"
+
+    def __init__(self,
+                 name: str = None,
+                 url: str = None,
+                 logo: str = None):
+        self.name = name  # Ключ (например, "github")
+        self.url = url  # Ссылка (например, "https://github.com...")
+        # HTML-тег картинки base64
+        self.logo = "<span style='font-size:1.1rem; vertical-align: middle;'>🔗</span>" if not logo else logo
+
+    def get_logo_name(self, key, config: Config):
+        filename = config.asset_settings.get(self.folder, {}).get(key)
+        return os.path.join(str(config.assets_dir), self.folder, filename) if filename else None
+
+
 class Company:
+    folder = "company"
+
     def __init__(self, 
                  name: str = None, 
                  url: str = None, 
@@ -12,8 +35,32 @@ class Company:
         self.skills = skills if skills is not None else []
         self.logo = None  # Сюда запишем HTML-тег картинки из ассетов
 
+    def get_logo_name(self, key, config: Config):
+        filename = config.asset_settings.get(self.folder, {}).get(key, "default_logo.svg")
+        return os.path.join(str(config.assets_dir), self.folder, filename)
+
+    def set_info(self, **kwargs):
+        self.name = kwargs.get("job_name", "")
+        self.url = kwargs.get("job_url", "")
+        self.position = kwargs.get("job_position", "")
+        self.period = kwargs.get("job_period", "")
+        self.skills = self._render_skills(kwargs.get("job_skills", []))
+
+    def _render_skills(self, skills_list: list) -> str:
+        """Переводит список строк в чистые HTML-плашки с классом skill-tag."""
+        if not skills_list:
+            return ""
+
+        # Собираем только чистые span-теги
+        tags_html = "".join([f'<span class="skill-tag">{skill}</span>' for skill in skills_list])
+
+        # Оборачиваем в контейнер-флексбокс
+        return f'<div class="skills-container">{tags_html}</div>'
+
 
 class Education:
+    folder = "education"
+
     def __init__(self, 
                  name: str = None, 
                  url: str = None, 
@@ -25,12 +72,54 @@ class Education:
         self.period = period
         self.logo = None  # Сюда запишем HTML-тег картинки из ассетов
 
+    def get_logo_name(self, key, config: Config):
+        filename = config.asset_settings.get(self.folder, {}).get(key, "default_logo.svg")
+        return os.path.join(str(config.assets_dir), self.folder, filename)
 
-class Social:
-    def __init__(self, 
-                 name: str = None, 
-                 url: str = None, 
-                 logo: str = None):
-        self.name = name     # Ключ (например, "github")
-        self.url = url       # Ссылка (например, "https://github.com...")
-        self.logo = logo     # HTML-тег картинки base64
+    def set_info(self, **kwargs):
+        self.name = kwargs.get("edu_name", "")
+        self.url = kwargs.get("edu_url", "")
+        self.specialization = kwargs.get("edu_specialization", "")
+        self.period = kwargs.get("edu_period", "")
+
+
+class Volunteer:
+    folder = "volunteer"
+
+    def __init__(self,
+                 name: str = None,
+                 description: str = None,
+                 url: str = None,
+                 position: str = None,
+                 period: str = None,
+                 skills: list = None):
+        self.name = name
+        self.description = description
+        self.url = url
+        self.position = position
+        self.period = period
+        self.skills = skills if skills is not None else []
+        self.logo = None  # Сюда запишем HTML-тег картинки из ассетов
+
+    def get_logo_name(self, key, config: Config):
+        filename = config.asset_settings.get(self.folder, {}).get(key, "default_logo.svg")
+        return os.path.join(str(config.assets_dir), self.folder, filename)
+
+    def set_info(self, **kwargs):
+        self.name = kwargs.get("act_name", "")
+        self.description = kwargs.get("act_description", "")
+        self.url = kwargs.get("act_url", "")
+        self.position = kwargs.get("act_position", "")
+        self.period = kwargs.get("act_period", "")
+        self.skills = self._render_skills(kwargs.get("act_skills", []))
+
+    def _render_skills(self, skills_list: list) -> str:
+        """Переводит список строк в чистые HTML-плашки с классом skill-tag."""
+        if not skills_list:
+            return ""
+
+        # Собираем только чистые span-теги
+        tags_html = "".join([f'<span class="skill-tag">{skill}</span>' for skill in skills_list])
+
+        # Оборачиваем в контейнер-флексбокс
+        return f'<div class="skills-container">{tags_html}</div>'

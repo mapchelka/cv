@@ -1,0 +1,14 @@
+<!-- templates/logo.html -->
+<style>
+    .logo {
+        border-radius: 8px !important;
+        object-fit: cover !important;
+        overflow: hidden !important;
+    }
+</style>
+
+<img src="data:{{mime_type}};base64,{{img_str}}"
+     class="logo"
+     width="{{width}}"
+     height="{{width}}"
+     style="vertical-align: middle;">

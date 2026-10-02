@@ -1,6 +1,6 @@
 # core/card_renderer.py
 from core.config_loader import Config
-from core.model import Company, Education, Social
+from core.model import Company, Education, Social, Volunteer
 
 
 class JobCardRenderer:
@@ -39,6 +39,28 @@ class EduCardRenderer:
             edu_url=edu.url or "#",
             edu_specialization=edu.specialization or "",
             edu_period=edu.period or ""
+        )
+
+
+class VolunteerCardRenderer:
+    """Рендеринг карточки волонтёрских проектов на основе HTML-шаблона."""
+    def __init__(self, config: Config):
+        self.template = config.volunteer_card_template
+
+    def render(self, act: Volunteer) -> str:
+        if not self.template:
+            return f"<div><h3>{act.position}</h3><p>{act.name}</p></div>"
+
+        # Собираем навыки в красивую строку через запятую для HTML
+        skills_str = ", ".join(act.skills) if isinstance(act.skills, list) else act.skills
+
+        # Обращаемся к атрибутам объекта через точку
+        return self.template.format(
+            job_position=act.position or "",
+            job_url=act.url or "#",
+            job_name=act.name or "",
+            job_period=act.period or "",
+            job_skills=skills_str or ""
         )
 
 
