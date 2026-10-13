@@ -3,6 +3,30 @@ from core.config_loader import Config
 from core.model import Company, Education, Social, Volunteer
 
 
+def render_skills(skills_list: list) -> str:
+    """Переводит список строк в HTML-плашки, обернутые в блок Ключевые навыки."""
+    # Если список пустой, None или не является списком — возвращаем пустоту
+    if not skills_list or not isinstance(skills_list, list):
+        return ""
+
+    # 1. Собираем только чистые span-теги плашек
+    tags_html = "".join([f'<span class="skill-tag">{skill}</span>' for skill in skills_list if skill])
+
+    # Если внутри не оказалось валидных тегов, тоже ничего не выводим
+    if not tags_html:
+        return ""
+
+    # 2. Оборачиваем в контейнер-флексбокс
+    skills_container = f'<div class="skills-container">{tags_html}</div>'
+
+    # 3. Возвращаем монолитный блок «Ключевые навыки» с чистым классом
+    return f"""
+    <div class="skills-block">
+        <strong>Ключевые навыки:</strong> {skills_container}
+    </div>
+    """
+
+
 class JobCardRenderer:
     """Рендеринг карточки опыта работы на основе HTML-шаблона."""
     def __init__(self, config: Config):
@@ -21,7 +45,7 @@ class JobCardRenderer:
             job_url=job.url or "#",
             job_name=job.name or "",
             job_period=job.period or "",
-            job_skills=skills_str or ""
+            job_skills=render_skills(job.skills) if job.skills else ""
         )
 
 
@@ -44,6 +68,7 @@ class EduCardRenderer:
 
 class VolunteerCardRenderer:
     """Рендеринг карточки волонтёрских проектов на основе HTML-шаблона."""
+
     def __init__(self, config: Config):
         self.template = config.volunteer_card_template
 
@@ -51,16 +76,13 @@ class VolunteerCardRenderer:
         if not self.template:
             return f"<div><h3>{act.position}</h3><p>{act.name}</p></div>"
 
-        # Собираем навыки в красивую строку через запятую для HTML
-        skills_str = ", ".join(act.skills) if isinstance(act.skills, list) else act.skills
-
-        # Обращаемся к атрибутам объекта через точку
         return self.template.format(
-            job_position=act.position or "",
-            job_url=act.url or "#",
-            job_name=act.name or "",
-            job_period=act.period or "",
-            job_skills=skills_str or ""
+            act_url=act.url or "#",
+            act_name=act.name or "",
+            act_description=act.description or "",
+            act_position=act.position or "",
+            act_period=act.period or "",
+            act_skills=render_skills(act.skills) if act.skills else ""
         )
 
 

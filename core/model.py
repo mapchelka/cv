@@ -44,18 +44,7 @@ class Company:
         self.url = kwargs.get("job_url", "")
         self.position = kwargs.get("job_position", "")
         self.period = kwargs.get("job_period", "")
-        self.skills = self._render_skills(kwargs.get("job_skills", []))
-
-    def _render_skills(self, skills_list: list) -> str:
-        """Переводит список строк в чистые HTML-плашки с классом skill-tag."""
-        if not skills_list:
-            return ""
-
-        # Собираем только чистые span-теги
-        tags_html = "".join([f'<span class="skill-tag">{skill}</span>' for skill in skills_list])
-
-        # Оборачиваем в контейнер-флексбокс
-        return f'<div class="skills-container">{tags_html}</div>'
+        self.skills = kwargs.get("job_skills", [])
 
 
 class Education:
@@ -111,15 +100,4 @@ class Volunteer:
         self.url = kwargs.get("act_url", "")
         self.position = kwargs.get("act_position", "")
         self.period = kwargs.get("act_period", "")
-        self.skills = self._render_skills(kwargs.get("act_skills", []))
-
-    def _render_skills(self, skills_list: list) -> str:
-        """Переводит список строк в чистые HTML-плашки с классом skill-tag."""
-        if not skills_list:
-            return ""
-
-        # Собираем только чистые span-теги
-        tags_html = "".join([f'<span class="skill-tag">{skill}</span>' for skill in skills_list])
-
-        # Оборачиваем в контейнер-флексбокс
-        return f'<div class="skills-container">{tags_html}</div>'
+        self.skills = kwargs.get("act_skills", [])
