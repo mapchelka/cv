@@ -60,7 +60,7 @@ class Config:
         self.contact_card_template = self._load_html("contact_card.html")
         self.edu_card_template = self._load_html("edu_card.html")
         self.job_card_template = self._load_html("job_card.html")
-        self.volunteer_card_template = self._load_html("job_card.html")
+        self.volunteer_card_template = self._load_html("volunteer.html")
         self.print_button_template = self._load_html("print_button.html")
         self.logo_template = self._load_html("logo.html")
 

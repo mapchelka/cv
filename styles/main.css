@@ -14,13 +14,35 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #191919 !important;
 }
 
-/* УМЕНЬШАЕМ ОТСТУПЫ СВЕРХУ И ПО БОКАМ ДЛЯ ЭКРАНА */
-.main .block-container {
-    padding-top: 2rem !important;    /* Уменьшили верхний отступ (был 6rem) */
-    padding-bottom: 2rem !important; /* Уменьшили нижний отступ */
-    padding-left: 3rem !important;   /* Сделали боковые поля аккуратнее */
-    padding-right: 3rem !important;
-    max-width: 900px !important;     /* Оптимальная ширина, чтобы резюме не растягивалось на весь монитор */
+/* 1. Обнуляем отступ у главного контейнера контента (учитывает новые классы Streamlit) */
+.stAppViewMain section.stMain .block-container,
+.block-container,
+[data-testid="ststMain"] .block-container {
+    padding-top: 0rem !important;
+    padding-bottom: 2rem !important;
+    margin-top: 0rem !important;
+    max-width: 900px !important; /* Удерживаем ширину для резюме */
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* 2. Полностью убираем невидимую "шапку" хедера, которая сдвигает текст вниз */
+header.stAppHeader,
+header[data-testid="stHeader"],
+.stAppHeader {
+    background-color: transparent !important;
+    height: 0px !important;
+    min-height: 0px !important;
+    display: none !important;
+}
+
+/* 3. Убираем отступ у самого первого блока с элементами внутри контейнера */
+[data-testid="stVerticalBlock"] {
+    gap: 0rem !important;
+}
+[data-testid="stVerticalBlock"] > div:first-child {
+    margin-top: 0rem !important;
+    padding-top: 0rem !important;
 }
 
 /* Ссылки (стиль LinkedIn) */
@@ -53,6 +75,15 @@ hr {
 #MainMenu, footer, header, [data-testid="stHeader"] {
     visibility: hidden;
     height: 0;
+}
+
+/* Красивые скругленные квадраты для логотипов организаций */
+img.logo {
+    border-radius: 8px !important;       /* Делает углы мягкими (скругленный квадрат) */
+    object-fit: scale-down !important;   /* Вписывает логотип целиком, не обрезая его бока */
+    overflow: hidden !important;        /* Защищает углы от вылезания картинки наружу */
+    border: none !important;            /* ПОЛНОСТЬЮ УБИРАЕМ РАМКУ */
+    background: transparent !important; /* УБИРАЕМ ЛЮБОЙ ФОН */
 }
 
 /* =======================================================
@@ -127,9 +158,9 @@ h2 {
 img.profile-avatar {
     width: 210px !important;
     height: 210px !important;
-    border-radius: 50% !important;      
-    object-fit: cover !important;        
-    margin-top: 10px !important;         
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    margin-top: 10px !important;
     display: block !important;
 }
 
@@ -167,14 +198,36 @@ img.profile-avatar {
 }
 
 /* Плашки навыков в стиле Хабра (skill-tag)*/
-/* Контейнер, чтобы плашки выстраивались в ряд и переносились */
+/* Настройка контейнера для плашек навыков */
 .skills-container {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 6px 8px !important;
-    margin-top: 8px !important;
-    margin-bottom: 4px !important;
+    display: inline-flex !important; /* Включаем флексбокс-режим */
+    flex-wrap: wrap !important;      /* Разрешаем перенос плашек на новую строку */
+    gap: 6px !important;            /* Задаем аккуратный зазор в 6px между плашками */
+    margin-top: 4px !important;      /* Небольшой отступ от надписи "Ключевые навыки:" */
+    vertical-align: middle !important;
 }
+
+/* На всякий случай фиксируем внутренние отступы внутри самих плашек */
+.skill-tag {
+    display: inline-block !important;
+    padding: 2px 8px !important;    /* Воздух внутри плашки: 2px сверху/снизу, 8px слева/справа */
+    white-space: nowrap !important; /* Запрещаем перенос одного слова на две строки */
+}
+
+/* Настройка всего блока "Ключевые навыки" */
+.skills-block {
+    margin-top: 6px !important;     /* Аккуратный отступ сверху от описания проекта */
+    font-size: 0.95rem !important;  /* Пропорциональный размер шрифта */
+    color: #191919 !important;      /* Фирменный темный цвет текста */
+    line-height: 1.4 !important;    /* Комфортный межстрочный интервал */
+}
+
+/* Выделение двоеточия и жирного текста */
+.skills-block strong {
+    font-weight: 600 !important;
+    margin-right: 4px !important;   /* Небольшой зазор перед первыми плашками */
+}
+
 
 /* Сама рамка-плашка навыка */
 html body .skill-tag {
@@ -193,35 +246,53 @@ html body .skill-tag {
    3. УЛЬТРА-СЖАТИЕ И ОПТИМИЗАЦИЯ ПОД 1 ЛИСТ А4 (@media print)
    ======================================================= */
 @media print {
-    /* 1. Скрываем абсолютно весь технический мусор Streamlit и контейнеры кнопок */
-    header, 
-    footer, 
-    [data-testid="stHeader"], 
-    [data-testid="stSidebar"], 
+    /* 1. ОБНУЛЯЕМ СИСТЕМНЫЕ ПОЛЯ БРАУЗЕРА ДЛЯ СТРАНИЦЫ */
+    @page {
+        margin: 0mm !important; /* Убираем поля самого печатного листа */
+        size: auto;
+    }
+
+    /* Скрываем абсолютно весь технический мусор Streamlit и контейнеры кнопок */
+    header,
+    footer,
+    header.stAppHeader,
+    [data-testid="stHeader"],
+    [data-testid="stSidebar"],
     .stAppDeployButton,
     .stComponentsEmbed,
     .top-buttons-container {
         display: none !important;
         visibility: hidden !important;
+        height: 0px !important;
+        min-height: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
     }
 
-    /* 2. Максимально зажимаем поля самого листа А4 для расширения текстовой зоны */
-    .stApp, [data-testid="stMainView"], .main .block-container {
+    /* 2. Максимально зажимаем поля и переопределяем новые селекторы Streamlit */
+    .stApp,
+    [data-testid="stMainView"],
+    .stAppViewMain section.stMain .block-container,
+    [data-testid="stMainView"] .block-container,
+    .main .block-container,
+    .block-container {
         background-color: #ffffff !important;
         display: block !important;
         visibility: visible !important;
-        padding-top: 8mm !important;     /* Сжали верхнее поле */
-        padding-bottom: 8mm !important;  /* Сжали нижнее поле */
-        padding-left: 12mm !important;   /* Сжали боковые поля, чтобы строки вмещали больше слов */
+        padding-top: 0mm !important;
+        padding-bottom: 8mm !important;
+        padding-left: 16mm !important;
         padding-right: 12mm !important;
+        margin-top: 0px !important;
         margin: 0 !important;
+        top: 0px !important;
     }
 
     /* 3. Схлопываем гигантские автоматические пустоты и отступы Streamlit */
     [data-testid="stVerticalBlock"] {
         gap: 0.2rem !important;          /* Минимальный зазор между виджетами */
     }
-    
+
     [data-testid="element-container"], div[data-testid="stBlock"] {
         margin-bottom: 0px !important;
         padding-bottom: 0px !important;
@@ -234,20 +305,26 @@ html body .skill-tag {
     }
 
     /* 4. Компактный шрифт и плотный межстрочный интервал */
-    html, body, p, span, li, a {
-        font-size: 12.5px !important;    
-        line-height: 1.25 !important;    
+    /* Задаем базовый компактный шрифт для всей страницы разом */
+    html, body {
+        font-size: 12px !important;
+        line-height: 1.25 !important;
+    }
+
+    /* Принудительно уменьшаем только списки, ссылки и параграфы (заголовки не пострадают) */
+    p, li, a, span.st-emotion-cache-1ghvjgc {
+        font-size: 12px !important;
     }
 
     /* Делаем заголовки соразмерными и убираем отступы до линий */
-    h1 { font-size: 22px !important; margin-top: 0px !important; margin-bottom: 3px !important; }
-    h2 { font-size: 16px !important; margin-top: 10px !important; margin-bottom: 1px !important; }
-    h3 { font-size: 15px !important; margin-top: 3px !important; margin-bottom: 3px !important; }
-    
+    h1 { font-size: 24px !important; margin-top: 0px !important; margin-bottom: 2px !important; }
+    h2 { font-size: 16px !important; margin-top: 3px !important; margin-bottom: 0px !important; }
+    h3 { font-size: 15px !important; margin-top: 2px !important; margin-bottom: 0px !important; }
+
     /* Линия прижата к заголовку сверху, но дает воздух карточке снизу */
-    hr, [data-testid="stHorizontalBlock"] + div hr { 
-        margin-top: 0px !important; 
-        margin-bottom: 16px !important;   /* Увеличили отступ, чтобы карточка Т-Банка не прилипала */
+    hr, [data-testid="stHorizontalBlock"] + div hr {
+        margin-top: 2px !important;
+        margin-bottom: 12px !important;   /* Увеличили отступ, чтобы карточка Т-Банка не прилипала */
     }
 
     /* Дополнительно убираем пустой схлопнутый маргин у контейнера линии */
@@ -279,7 +356,7 @@ html body .skill-tag {
     .contact-card-row {
         margin-bottom: 2px !important;  /* Минимальный плотный зазор на листе А4 */
     }
-    
+
     .contact-card-link {
         font-size: 12px !important;     /* Сделали шрифт контактов чуть меньше основного текста */
     }
@@ -288,14 +365,14 @@ html body .skill-tag {
         width: 14px !important;         /* Пропорционально уменьшаем контейнер иконки */
         height: 14px !important;
     }
-    
+
     .contact-icon img {
         width: 14px !important;         /* Сами иконки соцсетей тоже становятся аккуратнее */
         height: 14px !important;
     }
 
     .job-block, .edu-block {
-        margin-bottom: 2px !important;   
+        margin-bottom: 2px !important;
     }
 
     /* 6. Гарантия отображения Base64 картинок на печати */

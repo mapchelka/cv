@@ -20,7 +20,7 @@ edu_card_renderer = EduCardRenderer(config)
 volunteer_card_renderer = VolunteerCardRenderer(config)
 
 # 4. Устанавливаем метаданные вкладки браузера напрямую из объекта person
-st.set_page_config(page_title=person.page_title, page_icon=person.page_icon)
+st.set_page_config(page_title=person.page_title, page_icon=person.page_icon, layout="wide")
 
 # --- Кнопка печати
 if config.print_button_template:
