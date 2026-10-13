@@ -15,5 +15,10 @@
         "linkedin": "linkedin_icon.svg",
         "github": "github_icon.svg",
         "telegram": "telegram_icon.svg"
+    },
+    "volunteer": {
+        "insomnia": "insomniafest.svg",
+        "remember_moscow": "remember_moscow.jpg",
+        "multfest": "multfest.png"
     }
 }

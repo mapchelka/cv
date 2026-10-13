@@ -1,5 +1,8 @@
 import os
 import json
+import base64
+from io import BytesIO
+from PIL import Image
 
 
 class Config:
@@ -14,9 +17,6 @@ class Config:
     personal_settings_json = "personal_settings.json"
 
     # Явные константы подпапок для менеджера ассетов
-    company_folder = "company"
-    education_folder = "education"
-    social_media_folder = "social_media"
     profile_folder = "profile"
 
     def __init__(self):
@@ -39,7 +39,9 @@ class Config:
         self.contact_card_template = ""
         self.edu_card_template = ""
         self.job_card_template = ""
+        self.volunteer_card_template = ""
         self.print_button_template = ""
+        self.logo_template = ""
 
     def load(self):
         """Читает все конфигурации, стили и динамически загружает все HTML-шаблоны."""
@@ -58,7 +60,9 @@ class Config:
         self.contact_card_template = self._load_html("contact_card.html")
         self.edu_card_template = self._load_html("edu_card.html")
         self.job_card_template = self._load_html("job_card.html")
+        self.volunteer_card_template = self._load_html("job_card.html")
         self.print_button_template = self._load_html("print_button.html")
+        self.logo_template = self._load_html("logo.html")
 
     def _load_json(self, filename: str) -> dict:
         path = os.path.join(self.config_dir, filename)
@@ -77,4 +81,41 @@ class Config:
                 return f.read().strip()
         except Exception as e:
             print(f"Ошибка чтения HTML-шаблона {filename}: {e}")
+            return ""
+
+    def to_base64(self, file_path: str, width: int) -> str:
+        """Универсальный метод конвертации изображений (включая SVG) в HTML-тег Base64."""
+        if not os.path.exists(file_path):
+            return ""
+
+        try:
+            # --- ОСОБАЯ ОБРАБОТКА ДЛЯ SVG ---
+            if file_path.endswith(".svg"):
+                with open(file_path, "r", encoding="utf-8") as f:
+                    svg_content = f.read()
+                # Кодируем текстовое содержимое SVG в base64 байты, затем декодируем в строку
+                img_str = base64.b64encode(svg_content.encode("utf-8")).decode()
+                mime_type = "image/svg+xml"
+
+            # --- ОБЫЧНАЯ ОБРАБОТКА ДЛЯ РАСТРОВЫХ КАРТИНОК (PNG, JPG и др.) ---
+            else:
+                with Image.open(file_path) as img:
+                    buffered = BytesIO()
+                    fmt = img.format if img.format else "PNG"
+                    img.save(buffered, format=fmt)
+                    img_str = base64.b64encode(buffered.getvalue()).decode()
+                    mime_type = f"image/{fmt.lower()}"
+
+            rendered_html = (
+                self.logo_template
+                .replace("{{mime_type}}", mime_type)
+                .replace("{{img_str}}", img_str)
+                .replace("{{width}}", str(width))
+            )
+
+            # Возвращаем готовый HTML-тег, который Streamlit идеально отобразит
+            return rendered_html
+
+        except Exception as e:
+            print(f"Ошибка конвертации изображения {file_path}: {e}")
             return ""

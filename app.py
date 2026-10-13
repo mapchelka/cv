@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from core.config_loader import Config
 from core.personal_data import PersonalData
-from core.card_renderer import JobCardRenderer, EduCardRenderer, ContactCardRenderer
+from core.card_renderer import JobCardRenderer, EduCardRenderer, ContactCardRenderer, VolunteerCardRenderer
 
 # 1. Инициализируем и загружаем конфигурацию (JSON, CSS и HTML-шаблоны)
 config = Config()
@@ -17,6 +17,7 @@ person = PersonalData(config)
 contact_renderer = ContactCardRenderer(config)
 job_card_renderer = JobCardRenderer(config)
 edu_card_renderer = EduCardRenderer(config)
+volunteer_card_renderer = VolunteerCardRenderer(config)
 
 # 4. Устанавливаем метаданные вкладки браузера напрямую из объекта person
 st.set_page_config(page_title=person.page_title, page_icon=person.page_icon)
@@ -66,4 +67,19 @@ for edu in person.education:
             
     with col_info:
         st.html(edu_card_renderer.render(edu))
+    st.write("")
+
+# --- СЕКЦИЯ: ВОЛОНТЁРСТВО ---
+st.subheader("Волонтёрские проекты")
+st.write("---")
+
+for act in person.volunteer:
+    col_logo, col_info = st.columns([1, 12], gap="small")
+    with col_logo:
+        # Логотип автоматически подтянется из подпапки assets/company/
+        if act.logo:
+            st.html(act.logo)
+
+    with col_info:
+        st.html(volunteer_card_renderer.render(act))
     st.write("")
